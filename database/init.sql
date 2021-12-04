@@ -1,0 +1,7 @@
+CREATE DATABASE Person;
+USE Person;
+CREATE TABLE person_table (
+    PersonID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Firstname VARCHAR(100),
+    Lastname VARCHAR(100)
+);
