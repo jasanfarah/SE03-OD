@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+  app:
+    build: ./backend
+    volumes:
+      - ./app
+    depends_on:
+      - database
+  database:
+    build: ./database
+    networks:
+      - network1
+      - network2
+  proxy:
+    build: ./nginx
+
+networks:
+ network1:
+ network2:
+
+volumes:
+  app:
