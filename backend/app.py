@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify, redirect
 from flask_mysqldb import MySQL
 import json
 
@@ -15,8 +15,8 @@ mysql = MySQL(app)
 
 @app.route('/')
 def start():
-    return '<h1> Welcome <h1> <br> <a href="/person/">Person</a> <br> <a href="/persons">Persons</a>'
-@app.route('/person',methods=['GET', 'POST'])
+    return '<h1> Welcome <h1> <br> <a href="/person">Person</a> <br> <a href="/persons">Persons</a>'
+@app.route('/person',methods=['POST'])
 def person():
     if request.method == "POST":
         firstName = request.form['firstname']
@@ -25,9 +25,9 @@ def person():
         cur.execute("INSERT INTO person_table(Firstname, Lastname) VALUES (%s, %s)", (firstName, lastName))
         mysql.connection.commit()
         cur.close()
-    return render_template('insert.html')
+    return redirect('https://localhost/select.html',code=200)
 
-@app.route('/persons/', methods=['GET','POST'])
+@app.route('/persons', methods=['GET'])
 def persons():
         if request.method == "GET":
             cur = mysql.connection.cursor()
@@ -41,8 +41,7 @@ def persons():
                     "Lastname" : row['Lastname']
                 }
                 persons.append(obj)
-            data= json.dumps(persons)
-            print(data)
+            data= jsonify(persons)
         return data
 
 
