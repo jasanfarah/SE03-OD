@@ -24,7 +24,7 @@ def person():
     cur.execute("INSERT INTO person_table(Firstname, Lastname) VALUES (%s, %s)", (firstName, lastName))
     mysql.connection.commit()
     cur.close()
-    return redirect('https://localhost/select.html',code=200)
+    return redirect('https://localhost/select.html',200)
 
 @app.route('/persons', methods=['GET'])
 def persons():
