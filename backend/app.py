@@ -1,10 +1,9 @@
-from flask import Flask, request, render_template, jsonify, redirect
+from flask import Flask, request, jsonify, redirect
 from flask_mysqldb import MySQL
 import json
 
-app = Flask(__name__, template_folder='../html')
-
-app.config['MYSQL_HOST'] = 'localhost'
+app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'database'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'Person'
@@ -13,9 +12,6 @@ app.config['MYSQL_CURSORCLASS'] ='DictCursor'
 mysql = MySQL(app)
 
 
-@app.route('/')
-def start():
-    return '<h1> Welcome <h1> <br> <a href="/person">Person</a> <br> <a href="/persons">Persons</a>'
 @app.route('/person',methods=['POST'])
 def person():
     firstName = request.form['firstname']

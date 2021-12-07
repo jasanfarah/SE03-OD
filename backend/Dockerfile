@@ -1,6 +1,6 @@
-FROM python:alpine3.7 
+FROM python:3.7-alpine
 COPY . /app
 WORKDIR /app
-RUN apk add mariadb-dev && apk add python2 py2-pip gcc python2-dev musl-dev
+RUN apk add --no-cache gcc musl-dev linux-headers
 RUN pip install -r requirements.txt
 CMD [ "flask", "run", "--host=0.0.0.0" ]
