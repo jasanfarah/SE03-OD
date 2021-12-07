@@ -1,24 +1,28 @@
 
 version: '3.5'
 services:
-
-  backend:
-    build: ./backend
-    networks:
-      - network1
-      - network2
-
   database:
     build: ./database
     networks:
       - network2
+  backend:
+    build: ./backend    
+    networks:
+      - network1
+      - network2
+    depends_on:
+      - database
     ports:
-      - 8080:8080
-
+      - "8080:80"
   proxy:
     build: ./nginx
     networks:
       - network1
-
-volumes:
-  backend:
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+networks:
+  network1:
+  network2:
