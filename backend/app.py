@@ -9,11 +9,11 @@ def databaseConnection():
 @app.route('/person',methods=['POST'])
 def person():
     connector = databaseConnection()     
-    cur = connector.cursor()  
     firstName = request.form["firstname"]
-    lastName =  request.form["lastname"]   
+    lastName =  request.form["lastname"]     
+    cur = connector.cursor()  
     cur.execute("INSERT INTO person_table(Firstname, Lastname) VALUES (%s, %s)", (firstName, lastName))
-    mysql.connection.commit()
+    connector.commit()
     return "Added person",200
 
 @app.route('/persons', methods=['GET'])
@@ -36,4 +36,4 @@ def persons():
 
 
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", debug=True)
+	app.run(host="0.0.0.0", debug=True )
