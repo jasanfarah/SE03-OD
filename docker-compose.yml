@@ -3,7 +3,6 @@ version: '3.5'
 services:
   database:
     build: ./database
-    command: --default-authentication-plugin=mysql_native_password
     networks:
       - network2
   backend:

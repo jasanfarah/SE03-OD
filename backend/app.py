@@ -1,31 +1,26 @@
 from flask import Flask, request, jsonify, redirect
-from flask_mysqldb import MySQL
-import json
+import mysql.connector
 
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'database'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'Person'
-app.config['MYSQL_CURSORCLASS'] ='DictCursor'
-
-mysql = MySQL(app)
-
+#Husk at ændre host til database!!
+def databaseConnection():
+	return mysql.connector.connect(user='root',host='localhost',database='Person', password="")
 
 @app.route('/person',methods=['POST'])
 def person():
-    firstName = request.form['firstname']
-    lastName = request.form['lastname']
-    cur = mysql.connection.cursor()
+    connector = databaseConnection()     
+    cur = connector.cursor()  
+    firstName = request.form["firstname"]
+    lastName =  request.form["lastname"]   
     cur.execute("INSERT INTO person_table(Firstname, Lastname) VALUES (%s, %s)", (firstName, lastName))
     mysql.connection.commit()
-    cur.close()
     return redirect('https://localhost/select.html',200)
 
 @app.route('/persons', methods=['GET'])
 def persons():
-    
-    cur = mysql.connection.cursor()
+
+    connector = databaseConnection()
+    cur = connector.cursor(dictionary=True)     
     cur.execute("SELECT * FROM person_table")
     dbData = cur.fetchall()
     persons =[ ]
@@ -35,7 +30,7 @@ def persons():
         "PersonID" : row['PersonID'],
         "Lastname" : row['Lastname']
         }
-    persons.append(obj)
+        persons.append(obj)
     data= jsonify(persons)
     return data
 
