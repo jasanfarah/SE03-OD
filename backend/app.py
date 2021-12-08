@@ -4,7 +4,7 @@ import mysql.connector
 app = Flask(__name__)
 #Husk at ændre host til database!!
 def databaseConnection():
-	return mysql.connector.connect(user='root',host='localhost',database='Person', password="")
+	return mysql.connector.connect(host='database',database='Person',user='root')
 
 @app.route('/person',methods=['POST'])
 def person():
@@ -14,7 +14,7 @@ def person():
     lastName =  request.form["lastname"]   
     cur.execute("INSERT INTO person_table(Firstname, Lastname) VALUES (%s, %s)", (firstName, lastName))
     mysql.connection.commit()
-    return redirect('https://localhost/select.html',200)
+    return "Added person",200
 
 @app.route('/persons', methods=['GET'])
 def persons():
